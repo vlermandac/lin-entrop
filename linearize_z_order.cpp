@@ -13,6 +13,7 @@ using namespace std;
 using namespace cimg_library;
 
 CImg<float> src;
+CImg<float> img;
 
 uint32_t zorder(uint16_t xPos, uint16_t yPos)
 {
@@ -42,6 +43,7 @@ int main(int argc, char *argv[]){
 
         src.clear();
         src.assign(argv[i]);
+        img.assign(256*256, 1, 1, 3, 0);
 
         ofstream file;
         string name = "new/";
@@ -52,27 +54,37 @@ int main(int argc, char *argv[]){
 
         //Z order
         int z_order_array[256*256+5];
+        int rm[256*256+5];
+        int gm[256*256+5];
+        int bm[256*256+5];
         int aux, r, g, b;
         for(int i = 0; i < 256; ++i){
             for(int j = 0; j < 256; ++j){
                 aux = 0;
                 r = src(j, i, 0);// r = r << 16;
-               // g = src(j, i, 1); g = g << 8;
-               // b = src(j, i, 2);
-                //aux |= r; aux |= g; aux |= b;
-                z_order_array[zorder(i, j)] = r;
+                g = src(j, i, 1); //g = g << 8;
+                b = src(j, i, 2);
+                aux |= r; aux |= g; aux |= b;
+                z_order_array[zorder(i, j)] = aux;
+                rm[zorder(i, j)] = r;
+                gm[zorder(i, j)] = g;
+                bm[zorder(i, j)] = b;
             }
         }
 
         for(int i = 0; i < 256*256; ++i){
             int aux = z_order_array[i];
-            file.write(reinterpret_cast<const char*>(&aux), sizeof aux);
+            file<<aux;
+            //file.write(reinterpret_cast<const char*>(&aux), sizeof aux);
+            img(i, 0, 0) = rm[i];
+            img(i, 0, 1) = gm[i];
+            img(i, 0, 2) = bm[i];
         }
 
         file.close();
 
         //z_order_image.save(name);
-        //z_order_image.display();
+        img.display();
     }
 
     return 0;
