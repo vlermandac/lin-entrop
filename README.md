@@ -14,7 +14,7 @@ linearized images and better entropies (smaller values).
 
 ## External Libraries
 
-- CImg C++ library;
+- [CImg C++ library](http://cimg.eu/index.html).
 
 ## Installation
 General installation process is only available for GNU/Linux operating system.
@@ -37,9 +37,9 @@ Use -h or --help to display the help message.
 $lin-entrop -h
 Usage: lin-entrop [OPTION] <entropy order> <files>
 Options:"
-				-h, --help     display the help message."
-				-r, --row-major <files>    linearize in row major order."
-				-z, --z-order   <files>    linearize in z order (Morton Curve)."
+-h, --help     display the help message.
+-r, --row-major <files>    linearize in row major order.
+-z, --z-order   <files>    linearize in z order (Morton Curve).
 ```
 
 ## Future work
