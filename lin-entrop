@@ -1,0 +1,56 @@
+#!/bin/sh
+
+[ ! -s "entrop" ] && gcc -D_LARGEFILE64_SOURCE -o entrop src/entrop.c -lm
+[ ! -s "rowmajor" ] && g++ -o rowmajor src/linearize.cpp -lm -lpthread -lX11
+[ ! -s "zorder" ] && g++ -o zorder src/linearize_z_order.cpp -lm -lpthread -lX11
+
+while test $# -gt 0; do
+	case "$1" in
+
+		-h | --help)
+			echo "Usage: lin-entrop [OPTION] <entropy order> <files>"
+			echo "Options:"
+			echo "	-h, --help     display the help message."
+			echo "	-r, --row-major <files>    linearize in row major order."
+			echo "	-z, --z-order   <files>    linearize in z order (Morton Curve)."
+			exit 0
+			;;
+
+		-r | --row_major)
+			shift
+			x=0
+			echo "" > r_results
+			for i in "$@"
+			do
+				if [ $x -gt 0 ]; then
+					./rowmajor $i
+					aux=${i%.*}
+					name="r_lin_files/${aux##*/}"
+					./entrop $1 name >> r_results
+					echo "$i done"
+				fi
+				((x++))
+			done
+			exit 0
+			;;
+
+		-z | --z_order)
+			shift
+			x=0
+			echo "" > z_results
+			for i in "$@"
+			do
+				if [ $x -gt 0 ]; then
+					./zorder $i
+					aux=${i%.*}
+					name="z_lin_files/${aux##*/}"
+					./entrop $1 name >> z_results
+					echo "$i done"
+				fi
+				((x++))
+			done
+			exit 0
+			;;
+
+	esac
+done
