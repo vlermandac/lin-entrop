@@ -1,8 +1,10 @@
 #!/bin/sh
 
-[ ! -s "entrop" ] && gcc -D_LARGEFILE64_SOURCE -o entrop src/entrop.c -lm
-[ ! -s "rowmajor" ] && g++ -o rowmajor src/linearize.cpp -lm -lpthread -lX11
-[ ! -s "zorder" ] && g++ -o zorder src/linearize_z_order.cpp -lm -lpthread -lX11
+[ ! -s "entrop" ] && gcc -D_LARGEFILE64_SOURCE -o entrop src/entrop.c -lm;
+[ ! -s "rowmajor" ] && g++ -o rowmajor src/linearize.cpp -lm -lpthread -lX11;
+[ ! -s "zorder" ] && g++ -o zorder src/linearize_z_order.cpp -lm -lpthread -lX11;
+[ ! -s "r_lin_files" ] && mkdir r_lin_files
+[ ! -s "z_lin_files" ] && mkdir z_lin_files
 
 while test $# -gt 0; do
 	case "$1" in
@@ -26,7 +28,7 @@ while test $# -gt 0; do
 					./rowmajor $i
 					aux=${i%.*}
 					name="r_lin_files/${aux##*/}"
-					./entrop $1 name >> r_results
+					./entrop $name $1 >> r_results
 					echo "$i done"
 				fi
 				((x++))
@@ -44,7 +46,7 @@ while test $# -gt 0; do
 					./zorder $i
 					aux=${i%.*}
 					name="z_lin_files/${aux##*/}"
-					./entrop $1 name >> z_results
+					./entrop $name $1 >> z_results
 					echo "$i done"
 				fi
 				((x++))

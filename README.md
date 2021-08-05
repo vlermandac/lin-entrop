@@ -36,7 +36,7 @@ Use -h or --help to display the help message.
 ```sh
 $lin-entrop -h
 Usage: lin-entrop [OPTION] <entropy order> <files>
-Options:"
+Options:
 -h, --help     display the help message.
 -r, --row-major <files>    linearize in row major order.
 -z, --z-order   <files>    linearize in z order (Morton Curve).
