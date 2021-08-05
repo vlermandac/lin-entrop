@@ -19,7 +19,9 @@ int main(int argc, char *argv[]){
         //CImg<float> img(256*256, 1, 1, 3, 0);
 
         ofstream file;
-        string name = "r_lin_files/"; name += argv[i];
+        string aux(argv[i]);
+        aux = aux.substr(aux.find_last_of("/") + 1);
+        string name = "r_lin_files/"; name += aux;
         name = name.substr(0, name.find_last_of("."));
         cout<<name<<endl;
         file.open(name.c_str(), ios::binary);
